@@ -9,7 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.FileAwareEnv(
     DEBUG=(bool, False),
     DATABASE_URL=(str, 'sqlite:///db.sqlite3'),
-    DEBUG_TOOLS=(bool, False)
+    DEBUG_TOOLS=(bool, False),
+    SECRET_KEY=(str, 'test-secret-key'),
 )
 # reading .env file
 environ.Env.read_env('.env')
