@@ -10,6 +10,8 @@ from img_uploader.serializers import ImageSerializer
 from . import models
 
 from PIL import Image
+import imagehash
+import numpy as np
 
 
 class UploadImageView(APIView):
@@ -17,8 +19,38 @@ class UploadImageView(APIView):
     def post(self, request, format=None):
         serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
+            image: Image = Image.open(serializer.validated_data['file'])
+            image_hash = imagehash.whash(image)
+
+            # поиск одинаковых изображений
+            for item in models.Image.objects.all():
+                bit_array = []
+                bit_row = []
+                i = 0
+                for bit in item.p_hash.encode('utf-8'):
+                    i += 1
+                    bit_row.append(bit)
+                    if i == 8:
+                        bit_array.append(bit_row)
+                        bit_row = []
+                        i = 0
+                bit_array = np.array(bit_array)
+
+                h_distance = (imagehash.ImageHash(bit_array) - image_hash)
+                ratio_diff = abs(item.height / image.height - item.width / image.width)
+
+                # изображения одинаковые, если соотношение сторон отличается < 1% и Расстояние Хэмминга < 10
+                if ratio_diff < 0.01 and h_distance < 10:
+                    # если изображение больше, то сохраняем
+                    if image.height / item.height > 1 and image.width / item.width > 1:
+                        item.file = serializer.validated_data['file']
+                        item.height = image.height
+                        item.width = image.width
+                        item.save()
+                    return Response(item.id, status=status.HTTP_200_OK)
+
             instance = serializer.save()
-            return Response(instance.id, status=status.HTTP_200_OK)
+            return Response(instance.id, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -42,8 +74,7 @@ class ShowImageView(APIView):
             fixed_width = int(image.width * scale)
             if fixed_width <= 0:
                 fixed_width = 1
-            width_percent = (fixed_width / float(image.size[0]))
-            height_size = int((float(image.height) * float(width_percent)))
+            height_size = int((float(image.height) * float(scale)))
             if height_size <= 0:
                 height_size = 1
             image = image.resize((fixed_width, height_size))

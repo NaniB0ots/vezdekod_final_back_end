@@ -50,7 +50,7 @@ def main():
 
             response = requests.get(f'{api_url}:{api_port}/get/{image_id}?scale={scale}')
             print(get_formatted_response(response))
-            if response.status_code == 200:
+            if response.status_code in [200, 201]:
                 try:
                     img = Image.open(BytesIO(base64.b64decode(response.text)))
                     img.show()
