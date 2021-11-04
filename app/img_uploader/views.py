@@ -1,6 +1,7 @@
 import base64
 from io import BytesIO
 
+from django.core.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -9,6 +10,7 @@ from img_uploader.serializers import ImageSerializer
 from . import models
 
 from PIL import Image
+
 
 class UploadImageView(APIView):
 
@@ -22,10 +24,10 @@ class UploadImageView(APIView):
 
 
 class ShowImageView(APIView):
-    def get(self, request, pk):
+    def get(self, request, pk: str):
         try:
             instance = models.Image.objects.get(pk=pk)
-        except models.Image.DoesNotExist:
+        except (models.Image.DoesNotExist, ValidationError):
             return Response('Изображение не найдено', status=status.HTTP_404_NOT_FOUND)
         image: Image = Image.open(instance.file)
 
