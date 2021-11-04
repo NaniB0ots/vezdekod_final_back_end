@@ -22,6 +22,7 @@ class UploadImageView(APIView):
             image: Image = Image.open(serializer.validated_data['file'])
             image_hash = imagehash.whash(image)
 
+            # поиск одинаковых изображений
             for item in models.Image.objects.all():
                 bit_array = []
                 bit_row = []
@@ -36,9 +37,11 @@ class UploadImageView(APIView):
                 bit_array = np.array(bit_array)
 
                 h_distance = (imagehash.ImageHash(bit_array) - image_hash)
-
                 ratio_diff = abs(item.height / image.height - item.width / image.width)
+
+                # изображения одинаковые, если соотношение сторон отличается < 1% и Расстояние Хэмминга < 10
                 if ratio_diff < 0.01 and h_distance < 10:
+                    # если изображение больше, то сохраняем
                     if image.height / item.height > 1 and image.width / item.width > 1:
                         item.file = serializer.validated_data['file']
                         item.height = image.height
@@ -54,11 +57,6 @@ class UploadImageView(APIView):
 
 class ShowImageView(APIView):
     def get(self, request, pk: str):
-
-        # sql = 'SELECT *, BIT_COUNT(0xfefefed3e0a02000 ^ p_hash) as hamming_distance ' \
-        #       'FROM img_uploader_image ' \
-        #       'HAVING hamming_distance <= 10'
-
         try:
             instance = models.Image.objects.get(pk=pk)
         except (models.Image.DoesNotExist, ValidationError):
@@ -76,8 +74,7 @@ class ShowImageView(APIView):
             fixed_width = int(image.width * scale)
             if fixed_width <= 0:
                 fixed_width = 1
-            width_percent = (fixed_width / float(image.size[0]))
-            height_size = int((float(image.height) * float(width_percent)))
+            height_size = int((float(image.height) * float(scale)))
             if height_size <= 0:
                 height_size = 1
             image = image.resize((fixed_width, height_size))
