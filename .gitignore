@@ -1,5 +1,6 @@
 .idea/
 media/
+db_django/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
