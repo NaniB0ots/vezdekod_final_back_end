@@ -40,8 +40,7 @@ class ShowImageView(APIView):
 
         image_hash = imagehash.whash(image)
 
-        ratio = image.height / image.width
-        print('ratio: ', ratio)
+        print('height:', image.height, 'width:', image.width)
         for item in models.Image.objects.exclude(id=pk):
 
             bit_array = []
@@ -60,13 +59,11 @@ class ShowImageView(APIView):
             print('h_distance: ', h_distance)
             print(item)
 
-
-            item_image = Image.open(item.file)
-            ratio_item = item_image.height / item_image.width
-            print('ratio_item: ', ratio_item)
-            if h_distance < 10:
-                pass
-
+            print('height:', item.height, 'width:', item.width)
+            print(abs(item.height / image.height - item.width / image.width))
+            if abs(item.height / image.height - item.width / image.width) < 0.01 and h_distance < 10:
+                print('Они одинаковы!')
+            print('===============')
         # масштабирование
         scale = request.GET.get('scale')
         if scale:

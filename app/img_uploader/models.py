@@ -10,6 +10,9 @@ class Image(models.Model):
     file = models.ImageField('Изображение', upload_to='%Y/%m/%d/')
     p_hash = models.CharField(max_length=64, blank=True)
 
+    height = models.FloatField(blank=True, null=True)
+    width = models.FloatField(blank=True, null=True)
+
     creation_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
 
