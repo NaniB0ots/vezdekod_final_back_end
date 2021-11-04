@@ -44,3 +44,13 @@ POST http://back.698865-cs07173.tmweb.ru/upload/
   - `$ pip install Pillow`
 
 Запуск скрипта: `python demonstration_task_2.py`
+
+
+##  Задание 3
+Требуется: 
+- python 3.9
+- Установленные библиотеки: `requests` и `Pillow`:
+  - `$ pip install requests`
+  - `$ pip install Pillow`
+
+Запуск скрипта: `python demonstration_task_3.py`
