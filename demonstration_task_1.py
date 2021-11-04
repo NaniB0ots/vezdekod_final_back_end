@@ -36,13 +36,14 @@ def main():
         if action == '1':
             image_path = input('Введите путь до изображения: ')
             try:
-                file = open(image_path, 'rb')
-            except:
+                with open(image_path, 'rb') as file:
+                    response = requests.post(f'{api_url}:{api_port}/upload/', files={'file': file})
+                    print(get_formatted_response(response))
+            except FileNotFoundError:
                 print('[Error] Файл не найден')
                 continue
 
-            response = requests.post(f'{api_url}:{api_port}/upload/', files={'file': file})
-            print(get_formatted_response(response))
+
 
         elif action == '2':
             image_id = input('Введите идентификатор изображения: ')
