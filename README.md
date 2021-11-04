@@ -23,9 +23,9 @@ _Проект запускается на порту 8080_
 
 # Демонстрация работы
 ## Эндпоинты
-GET http://back.698865-cs07173.tmweb.ru/get/&lt;id&gt;/
+GET `http://back.698865-cs07173.tmweb.ru/get/<id>/`
 
-POST http://back.698865-cs07173.tmweb.ru/upload/
+POST `http://back.698865-cs07173.tmweb.ru/upload/`
 
 ##  Задание 1
 Требуется: 
