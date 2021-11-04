@@ -88,8 +88,11 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 # Database
 
+db_connection = env.db()
+db_connection['OPTIONS'] = {'charset': 'utf8mb4'}
+
 DATABASES = {
-    'default': env.db(),
+    'default': db_connection,
 }
 
 # Password validation
