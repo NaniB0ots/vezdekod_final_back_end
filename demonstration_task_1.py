@@ -18,8 +18,8 @@ def print_menu_actions():
 
 
 def main():
-    api_url = 'http://127.0.0.1'
-    api_port = '8000'
+    api_url = 'http://back.698865-cs07173.tmweb.ru'
+    api_port = ''
 
     if not api_port:
         api_port = '80'
