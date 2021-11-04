@@ -13,8 +13,8 @@ services:
     volumes:
       - ./app/static:/usr/src/app/static
       - ./app/media:/usr/src/app/media
-    env_file:
-      - .env
+    environment:
+      - DATABASE_URL=mysql://django_user:password@db:3306/db_django
     depends_on:
       - db
 
