@@ -19,6 +19,33 @@ class UploadImageView(APIView):
     def post(self, request, format=None):
         serializer = ImageSerializer(data=request.data)
         if serializer.is_valid():
+            image: Image = Image.open(serializer.validated_data['file'])
+            image_hash = imagehash.whash(image)
+
+            for item in models.Image.objects.all():
+                bit_array = []
+                bit_row = []
+                i = 0
+                for bit in item.p_hash.encode('utf-8'):
+                    i += 1
+                    bit_row.append(bit)
+                    if i == 8:
+                        bit_array.append(bit_row)
+                        bit_row = []
+                        i = 0
+                bit_array = np.array(bit_array)
+
+                h_distance = (imagehash.ImageHash(bit_array) - image_hash)
+
+                ratio_diff = abs(item.height / image.height - item.width / image.width)
+                if ratio_diff < 0.01 and h_distance < 10:
+                    if image.height / item.height > 1 and image.width / item.width > 1:
+                        item.file = serializer.validated_data['file']
+                        item.height = image.height
+                        item.width = image.width
+                        item.save()
+                    return Response(item.id, status=status.HTTP_200_OK)
+
             instance = serializer.save()
             return Response(instance.id, status=status.HTTP_200_OK)
         else:
@@ -38,32 +65,6 @@ class ShowImageView(APIView):
             return Response('Изображение не найдено', status=status.HTTP_404_NOT_FOUND)
         image: Image = Image.open(instance.file)
 
-        image_hash = imagehash.whash(image)
-
-        print('height:', image.height, 'width:', image.width)
-        for item in models.Image.objects.exclude(id=pk):
-
-            bit_array = []
-            bit_row = []
-            i = 0
-            for bit in item.p_hash.encode('utf-8'):
-                i += 1
-                bit_row.append(bit)
-                if i == 8:
-                    bit_array.append(bit_row)
-                    bit_row = []
-                    i = 0
-            bit_array = np.array(bit_array)
-
-            h_distance = (imagehash.ImageHash(bit_array) - image_hash)
-            print('h_distance: ', h_distance)
-            print(item)
-
-            print('height:', item.height, 'width:', item.width)
-            print(abs(item.height / image.height - item.width / image.width))
-            if abs(item.height / image.height - item.width / image.width) < 0.01 and h_distance < 10:
-                print('Они одинаковы!')
-            print('===============')
         # масштабирование
         scale = request.GET.get('scale')
         if scale:
