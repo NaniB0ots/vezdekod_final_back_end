@@ -8,6 +8,7 @@ from project import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('users.urls')),
+    path('api/images/', include('img_uploader.urls')),
 ]
 
 if settings.DEBUG and settings.DEBUG_TOOLS:
