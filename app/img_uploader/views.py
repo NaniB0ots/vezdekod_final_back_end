@@ -1,9 +1,14 @@
+import base64
+from io import BytesIO
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
 from img_uploader.serializers import ImageSerializer
+from . import models
 
+from PIL import Image
 
 class UploadImageView(APIView):
 
@@ -18,4 +23,14 @@ class UploadImageView(APIView):
 
 class ShowImageView(APIView):
     def get(self, request, pk):
-        return Response(f'Дароу {pk}')
+        try:
+            instance = models.Image.objects.get(pk=pk)
+        except models.Image.DoesNotExist:
+            return Response('Изображение не найдено', status=status.HTTP_404_NOT_FOUND)
+        image: Image = Image.open(instance.file)
+
+        buffered = BytesIO()
+        image.save(buffered, format='JPEG')
+        img_str = base64.b64encode(buffered.getvalue())
+
+        return Response(img_str)
