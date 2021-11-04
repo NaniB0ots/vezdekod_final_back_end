@@ -26,8 +26,8 @@ _Проект запускается на порту 8080_
 Требуется: 
 - python 3.9
 - Установленные библиотеки: `requests` и `Pillow`:
-  1. `$ pip install requests`
-  2. `$ pip install Pillow`
+  - `$ pip install requests`
+  - `$ pip install Pillow`
 
 Запуск скрипта: `python demonstration_task_1.py`
 
@@ -35,7 +35,7 @@ _Проект запускается на порту 8080_
 Требуется: 
 - python 3.9
 - Установленные библиотеки: `requests` и `Pillow`:
-  1. `$ pip install requests`
-  2. `$ pip install Pillow`
+  - `$ pip install requests`
+  - `$ pip install Pillow`
 
 Запуск скрипта: `python demonstration_task_2.py`
