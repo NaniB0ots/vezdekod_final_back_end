@@ -49,11 +49,12 @@ def main():
             response = requests.get(f'{api_url}:{api_port}/get/{image_id}')
             print(get_formatted_response(response))
 
-            try:
-                img = Image.open(BytesIO(base64.b64decode(response.text)))
-                img.show()
-            except:
-                print('[Error] Не удалось открыть изображение')
+            if response.status_code == 200:
+                try:
+                    img = Image.open(BytesIO(base64.b64decode(response.text)))
+                    img.show()
+                except:
+                    print('[Error] Не удалось открыть изображение')
 
         elif action == '3':
             break
