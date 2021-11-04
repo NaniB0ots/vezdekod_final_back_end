@@ -47,7 +47,7 @@ class UploadImageView(APIView):
                     return Response(item.id, status=status.HTTP_200_OK)
 
             instance = serializer.save()
-            return Response(instance.id, status=status.HTTP_200_OK)
+            return Response(instance.id, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
