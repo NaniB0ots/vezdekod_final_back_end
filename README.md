@@ -23,9 +23,32 @@ _Проект запускается на порту 8080_
 
 # Демонстрация работы
 ## Эндпоинты
-GET `http://back.698865-cs07173.tmweb.ru/get/<id>/`
+**GET** `http://back.698865-cs07173.tmweb.ru/get/<id>/`
 
-POST `http://back.698865-cs07173.tmweb.ru/upload/`
+Response:
+```json
+"Изображение в base64"
+```
+![image](https://user-images.githubusercontent.com/56492378/140515531-2a70a026-a1a4-49f5-8a13-fa145e94d78b.png)
+
+
+**POST** `http://back.698865-cs07173.tmweb.ru/upload/`
+
+Request (_form_data_):
+```json
+{
+   "file": file_object
+}
+```
+
+Response:
+```json
+   "image_id_string"
+```
+
+![image](https://user-images.githubusercontent.com/56492378/140515126-2bf760b0-ca69-454c-8eea-32ec103347e3.png)
+
+
 
 ##  Задание 1
 Требуется: 
@@ -54,3 +77,12 @@ POST `http://back.698865-cs07173.tmweb.ru/upload/`
   - `$ pip install Pillow`
 
 Запуск скрипта: `python demonstration_task_3.py`
+
+##  Задание 4
+Требуется: 
+- python 3.9
+- Установленные библиотеки: `requests` и `Pillow`:
+  - `$ pip install requests`
+  - `$ pip install Pillow`
+
+Запуск скрипта: `python demonstration_task_4.py`
