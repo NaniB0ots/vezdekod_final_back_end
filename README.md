@@ -1,6 +1,8 @@
-# Запуск проекта 
+# Back End
 
-## Без docker
+## Запуск проекта 
+
+### Без docker
 Требуется 
 - python 3.9
 
@@ -16,12 +18,12 @@
 
 _Проект запускается на порту 8000_
 
-## C использованием docker и docker-compose
+### C использованием docker и docker-compose
 `$ docker-compose up -d --build`
 
 _Проект запускается на порту 8080_
 
-# Демонстрация работы
+
 ## Эндпоинты
 **GET** `http://back.698865-cs07173.tmweb.ru/get/<id>/`
 
@@ -49,6 +51,7 @@ Response: [201] - создана новая запись в БД, [200] - най
 ![image](https://user-images.githubusercontent.com/56492378/140515126-2bf760b0-ca69-454c-8eea-32ec103347e3.png)
 
 
+## Демонстрация работы
 
 ##  Задание 1
 Требуется: 
